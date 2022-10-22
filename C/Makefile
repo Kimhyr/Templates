@@ -1,11 +1,11 @@
+NAME  = KTE
+
 CC    = clang
-OPTS  = -O0
-DFLGS = -MP -MD
-FLGS  = -Wall -Wextra -pedantic $(DFLGS)
+FLGS  = -std=c11 -O3 -Wall -Wextra -pedantic
 
 SRC   = ./Source
 OUT   = ./Output
-BIN   = $(OUT)/main.exe
+BIN   = $(OUT)/$(name).exe
 
 DIRS  = $(SRC)
 SRCS  = $(foreach D,$(DIRS),$(wildcard $(D)/*.c))
@@ -18,13 +18,13 @@ run: $(BIN)
 	$(BIN)
 
 $(BIN): $(OBJS)
-	$(CC) $^ -o $@ 
+	$(CC) $^ -o $@ $(FLGS)
 
 $(OUT)/%.o: $(SRC)/%.c
-	$(CC) -c $^ -o $@ $(CFLAGS)
+	$(CC) -c $^ -o $@ $(FLGS)
 
 clean:
-	rm -rf $(BIN) $(OBJS) $(DEPS)
+	rm -rf $(OUT)/*
 
 diff:
 	@git status
