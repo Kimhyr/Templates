@@ -1,34 +1,39 @@
-NAME  = KTE
+NAME=
+CC=clang
 
-CC    = clang
-FLGS  = -std=c11 -O3 -Wall -Wextra -pedantic
+SRC=./Source
+OUT=./Output
+OBJ=$(OUT)/Objects
+BIN=$(OUT)/$(NAME).exe
 
-SRC   = ./Source
-OUT   = ./Output
-BIN   = $(OUT)/$(name).exe
+DIRS=. Analysis Utils
+INCS=$(foreach D,$(DIRS),$(SRC)/$(D))
+SRCS=$(foreach D,$(INCS),$(wildcard $(D)/*.c))
+OBJS=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
 
-DIRS  = $(SRC)
-SRCS  = $(foreach D,$(DIRS),$(wildcard $(D)/*.c))
-OBJS  = $(patsubst $(SRC)/%.c,$(OUT)/%.o,$(SRCS))
-DEPS  = $(patsubst $(SRC)/%c,%.d,$(SRCS))
+EFLGS=-std=c11 -O3 -g
+WFLGS=-Werror -Wall -Wextra -pedantic
+FLGS=$(EFLGS) $(WFLGS) $(foreach D,$(INCS),-I$(D))
 
-all: $(BIN)
+all:$(BIN)
 
-run: $(BIN)
+run:$(BIN)
 	$(BIN)
 
-$(BIN): $(OBJS)
-	$(CC) $^ -o $@ $(FLGS)
+$(BIN):$(OBJS)
+	$(CC) $^ -o $@
 
-$(OUT)/%.o: $(SRC)/%.c
+$(OBJ)/%.o:$(SRC)/%.c
 	$(CC) -c $^ -o $@ $(FLGS)
 
 clean:
 	rm -rf $(OUT)/*
+	mkdir $(OBJ)
+	mkdir $(foreach D,$(DIRS),$(OBJ)/$(D))
 
-diff:
+diffs:
 	@git status
 	@git diff --stat
 
-.PHONY: all clean diff
+.PHONY:all clean diff
 
