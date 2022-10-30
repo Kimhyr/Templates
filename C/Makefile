@@ -1,15 +1,16 @@
-NAME=
-CC=clang
+NAME=kplc
+EXT=cc
+CC=clang++
 
 SRC=./Source
 OUT=./Output
 OBJ=$(OUT)/Objects
 BIN=$(OUT)/$(NAME).exe
 
-DIRS=. Analysis Utils
+DIRS=.
 INCS=$(foreach D,$(DIRS),$(SRC)/$(D))
-SRCS=$(foreach D,$(INCS),$(wildcard $(D)/*.c))
-OBJS=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
+SRCS=$(foreach D,$(INCS),$(wildcard $(D)/*.$(EXT)))
+OBJS=$(patsubst $(SRC)/%.$(EXT),$(OBJ)/%.o,$(SRCS))
 
 EFLGS=-std=c11 -O3 -g
 WFLGS=-Werror -Wall -Wextra -pedantic
@@ -23,7 +24,7 @@ run:$(BIN)
 $(BIN):$(OBJS)
 	$(CC) $^ -o $@
 
-$(OBJ)/%.o:$(SRC)/%.c
+$(OBJ)/%.o:$(SRC)/%.$(EXT)
 	$(CC) -c $^ -o $@ $(FLGS)
 
 clean:

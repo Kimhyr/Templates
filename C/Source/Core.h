@@ -1,16 +1,16 @@
 #pragma once
-#ifndef _CORE_
-#define _CORE_
+#ifndef CORE_H
+#define CORE_H
 
-#define T 1
-#define F 0
+#define T true
+#define F false
 
 typedef void V;
-typedef unsigned char B;
-typedef unsigned long long int S;
+
+typedef bool B;
 
 typedef char C8;
-typedef short C16;
+typedef wchar_t C16;
 
 typedef signed char I8;
 typedef signed short int I16;
@@ -26,4 +26,4 @@ typedef float F32;
 typedef double F64;
 typedef long double F128;
 
-#endif
+#endif  // CORE_H
